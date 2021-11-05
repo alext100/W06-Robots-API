@@ -21,3 +21,15 @@ const getRobotById = async (req, res, next) => {
     next(error);
   }
 };
+
+const createRobot = async (req, res, next) => {
+  try {
+    const robot = req.body;
+    const newRobot = await Robot.create(robot);
+    res.json(newRobot);
+  } catch (error) {
+    error.code = 400;
+    error.message = "Error on create new robot!";
+    next(error);
+  }
+};
