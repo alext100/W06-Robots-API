@@ -6,9 +6,9 @@ const getRobot = async (req, res) => {
 };
 
 const getRobotById = async (req, res, next) => {
-  const { id } = req.params;
+  const { idRobot } = req.params;
   try {
-    const searchedRobot = await Robot.findById(id);
+    const searchedRobot = await Robot.findById(idRobot);
     if (searchedRobot) {
       res.json(searchedRobot);
     } else {
@@ -33,3 +33,17 @@ const createRobot = async (req, res, next) => {
     next(error);
   }
 };
+
+const deleteRobot = async (req, res, next) => {
+  const { idRobot } = req.params;
+  try {
+    const robotToDelete = await Robot.findByIdAndRemove(idRobot);
+    res.json(robotToDelete);
+  } catch (error) {
+    error.code = 500;
+    error.message = "Error on delete Robot";
+    next(error);
+  }
+};
+
+module.exports = { getRobot, createRobot, getRobotById, deleteRobot };
