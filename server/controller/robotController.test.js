@@ -1,5 +1,5 @@
 const Robot = require("../../database/models/robot");
-const { getRobot, getRobotById } = require("./robotController");
+const { getRobot, getRobotById, createRobot } = require("./robotController");
 
 jest.mock("../../database/models/robot");
 
@@ -112,6 +112,32 @@ describe("Given getRobotById function", () => {
       await getRobotById(req, res);
 
       expect(res.json).toHaveBeenCalledWith(robot);
+    });
+  });
+});
+
+describe("Given a createRobot function", () => {
+  describe("When it receives a request with an object robot", () => {
+    test("Then it should invoke Robot.create with a robot", async () => {
+      Robot.create = jest.fn().mockResolvedValue({});
+      const robot = {
+        name: "robot-x",
+        image: "imageofrobot-x.jpeg",
+        speed: 5,
+        resiliency: 5,
+        creationDate: "2021-11-15T02:24:00.000Z",
+      };
+      const req = {
+        body: robot,
+      };
+      const res = {
+        json: () => {},
+      };
+      const next = () => {};
+
+      await createRobot(req, res, next);
+
+      expect(Robot.create).toHaveBeenCalledWith(robot);
     });
   });
 });
