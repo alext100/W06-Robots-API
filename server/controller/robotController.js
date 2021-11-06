@@ -64,9 +64,11 @@ const checkToken = (req, res, next) => {
   if (process.env.TOKEN === token) {
     next();
   } else {
-    res
-      .status(403)
-      .json({ error: "Error! Missing token. You do not have access rights!" });
+    const error = new Error(
+      "Error! Missing token. You do not have access rights!"
+    );
+    error.code = 401;
+    next(error);
   }
 };
 
