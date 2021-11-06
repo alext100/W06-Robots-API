@@ -146,6 +146,23 @@ describe("Given a createRobot function", () => {
       expect(Robot.create).toHaveBeenCalledWith(robot);
     });
   });
+  describe("And Robot.create rejects", () => {
+    test("Then it should invoke next function with the error rejected", async () => {
+      const error = {};
+      Robot.create = jest.fn().mockRejectedValue(error);
+      const req = {
+        params: {
+          idRobot: 0,
+        },
+      };
+      const res = {};
+      const next = jest.fn();
+
+      await createRobot(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
+  });
 });
 
 describe("Given a deleteRobot function", () => {
