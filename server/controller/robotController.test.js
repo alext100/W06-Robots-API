@@ -4,6 +4,7 @@ const {
   getRobotById,
   createRobot,
   deleteRobot,
+  updateRobot,
 } = require("./robotController");
 
 jest.mock("../../database/models/robot");
@@ -165,6 +166,34 @@ describe("Given a deleteRobot function", () => {
       await deleteRobot(req, res, next);
 
       expect(Robot.findByIdAndRemove).toHaveBeenCalledWith(idRobot);
+    });
+  });
+});
+
+describe("Given an updateRobot function", () => {
+  describe("When it receives a request with a robot", () => {
+    test("Then it should invoke Robot.findOneAndUpdate with the idRobot and robot", async () => {
+      const robot = {
+        _id: "6185c1af9f1964f08e62d131",
+        name: "robot-1",
+        image: "imageofrobot-1",
+        speed: 5,
+        resiliency: 5,
+        creationDate: "2021-11-15T02:24:00.000Z",
+      };
+      // eslint-disable-next-line no-underscore-dangle
+      const req = {
+        body: robot,
+      };
+      const { _id } = req.body;
+      const res = {
+        json: jest.fn(),
+      };
+
+      Robot.findOneAndUpdate = jest.fn().mockResolvedValue({});
+      await updateRobot(req, res, null);
+
+      expect(Robot.findOneAndUpdate).toHaveBeenCalledWith(_id, robot);
     });
   });
 });
