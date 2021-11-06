@@ -1,5 +1,10 @@
 const Robot = require("../../database/models/robot");
-const { getRobot, getRobotById, createRobot } = require("./robotController");
+const {
+  getRobot,
+  getRobotById,
+  createRobot,
+  deleteRobot,
+} = require("./robotController");
 
 jest.mock("../../database/models/robot");
 
@@ -138,6 +143,28 @@ describe("Given a createRobot function", () => {
       await createRobot(req, res, next);
 
       expect(Robot.create).toHaveBeenCalledWith(robot);
+    });
+  });
+});
+
+describe("Given a deleteRobot function", () => {
+  describe("When it receives a request with an idRobot", () => {
+    test("Then it should invoke a Robot.findByIdAndRemove with the idRobot", async () => {
+      Robot.findByIdAndRemove = jest.fn().mockResolvedValue({});
+      const idRobot = 66;
+      const req = {
+        params: {
+          idRobot,
+        },
+      };
+      const res = {
+        json: () => {},
+      };
+      const next = () => {};
+
+      await deleteRobot(req, res, next);
+
+      expect(Robot.findByIdAndRemove).toHaveBeenCalledWith(idRobot);
     });
   });
 });
