@@ -3,6 +3,7 @@ const debug = require("debug")("robots:server");
 const express = require("express");
 const morgan = require("morgan");
 const { notFoundErrorHandler, generalErrorHandler } = require("./error");
+const robotRoutes = require("./routes/robotRoutes");
 
 const app = express();
 
@@ -25,6 +26,8 @@ app.use((req, res, next) => {
   debug("I´m a second middleware");
   next();
 });
+
+app.use("/", robotRoutes);
 
 app.use(notFoundErrorHandler);
 app.use(generalErrorHandler);
