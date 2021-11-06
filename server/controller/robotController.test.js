@@ -5,6 +5,7 @@ const {
   createRobot,
   deleteRobot,
   updateRobot,
+  checkToken,
 } = require("./robotController");
 
 jest.mock("../../database/models/robot");
@@ -256,6 +257,38 @@ describe("Given an updateRobot function", () => {
       await updateRobot(req, res, next);
 
       expect(next).toHaveBeenCalledWith(error);
+    });
+  });
+});
+
+describe("Given a checkToken function", () => {
+  describe("When it receives a request, response objects and a next function", () => {
+    test("Then it should invoke the next function if the token is the same that process.env.TOKEN", () => {
+      const res = {
+        status: () => {},
+        json: () => {},
+      };
+      const req = {
+        query: { token: process.env.TOKEN },
+      };
+      const next = jest.fn();
+
+      checkToken(req, res, next);
+
+      expect(next).toHaveBeenCalled();
+    });
+
+    test("Then it should response with error.code 401 and error message", () => {
+      const error = {};
+      const req = {
+        query: { token: "h29D8b23Llm45" },
+      };
+      const next = jest.fn();
+
+      checkToken(req, null, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+      // expect(error.code).toBe(401);
     });
   });
 });
