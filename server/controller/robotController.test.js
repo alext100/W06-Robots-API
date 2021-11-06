@@ -230,4 +230,32 @@ describe("Given an updateRobot function", () => {
       expect(Robot.findOneAndUpdate).toHaveBeenCalledWith(_id, robot);
     });
   });
+  describe("And Robot.findOneAndUpdate rejects", () => {
+    test("Then it should invoke next function with the error rejected", async () => {
+      const error = {};
+      Robot.findOneAndUpdate = jest.fn().mockRejectedValue(error);
+      const robot = {
+        _id: "6185c1af9f1964f08e62d131",
+        name: "robot-1",
+        image: "imageofrobot-1",
+        speed: 5,
+        resiliency: 5,
+        creationDate: "2021-11-15T02:24:00.000Z",
+      };
+
+      const req = {
+        body: robot,
+      };
+      // eslint-disable-next-line no-unused-vars
+      const { _id } = req.body;
+      const res = {
+        json: jest.fn(),
+      };
+      const next = jest.fn();
+
+      await updateRobot(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
+  });
 });
