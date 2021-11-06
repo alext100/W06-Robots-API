@@ -46,4 +46,23 @@ const deleteRobot = async (req, res, next) => {
   }
 };
 
-module.exports = { getRobot, createRobot, getRobotById, deleteRobot };
+const updateRobot = async (req, res, next) => {
+  try {
+    const robot = req.body;
+    const { idRobot } = req.body;
+    const newRobot = await Robot.findOneAndUpdate(idRobot, robot);
+    res.json(newRobot);
+  } catch (error) {
+    error.code = 400;
+    error.message = "Error on update the robot!";
+    next(error);
+  }
+};
+
+module.exports = {
+  getRobot,
+  createRobot,
+  getRobotById,
+  deleteRobot,
+  updateRobot,
+};
