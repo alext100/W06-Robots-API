@@ -59,10 +59,22 @@ const updateRobot = async (req, res, next) => {
   }
 };
 
+const checkToken = (req, res, next) => {
+  const { token } = { ...req.query };
+  if (process.env.TOKEN === token) {
+    next();
+  } else {
+    res
+      .status(403)
+      .json({ error: "Error! Missing token. You do not have access rights!" });
+  }
+};
+
 module.exports = {
   getRobot,
   createRobot,
   getRobotById,
   deleteRobot,
   updateRobot,
+  checkToken,
 };
