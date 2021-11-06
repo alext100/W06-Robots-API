@@ -185,6 +185,23 @@ describe("Given a deleteRobot function", () => {
       expect(Robot.findByIdAndRemove).toHaveBeenCalledWith(idRobot);
     });
   });
+  describe("And Robot.findByIdAndRemove rejects", () => {
+    test("Then it should invoke next function with the error rejected", async () => {
+      const error = {};
+      Robot.findByIdAndRemove = jest.fn().mockRejectedValue(error);
+      const req = {
+        params: {
+          idRobot: 0,
+        },
+      };
+      const res = {};
+      const next = jest.fn();
+
+      await deleteRobot(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
+  });
 });
 
 describe("Given an updateRobot function", () => {
