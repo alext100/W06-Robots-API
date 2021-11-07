@@ -1,4 +1,5 @@
 const chalk = require("chalk");
+const cors = require("cors");
 const debug = require("debug")("robots:server");
 const express = require("express");
 const morgan = require("morgan");
@@ -6,6 +7,11 @@ const { notFoundErrorHandler, generalErrorHandler } = require("./error");
 const robotRoutes = require("./routes/robotRoutes");
 
 const app = express();
+
+app.use(cors());
+
+app.use(morgan("dev"));
+app.use(express.json());
 
 const initializeServer = (port) => {
   const server = app.listen(port, () => {
@@ -19,13 +25,6 @@ const initializeServer = (port) => {
     }
   });
 };
-
-app.use(morgan("dev"));
-app.use(express.json());
-app.use((req, res, next) => {
-  debug("I´m a second middleware");
-  next();
-});
 
 app.use("/", robotRoutes);
 

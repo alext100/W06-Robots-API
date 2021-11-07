@@ -247,8 +247,6 @@ describe("Given an updateRobot function", () => {
       const req = {
         body: robot,
       };
-      // eslint-disable-next-line no-unused-vars
-      const { _id } = req.body;
       const res = {
         json: jest.fn(),
       };
@@ -288,7 +286,6 @@ describe("Given a checkToken function", () => {
       checkToken(req, null, next);
 
       expect(next).toHaveBeenCalledWith(error);
-      // expect(error.code).toBe(401);
     });
   });
 });
