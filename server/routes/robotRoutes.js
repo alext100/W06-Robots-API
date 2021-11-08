@@ -5,19 +5,19 @@ const {
   getRobotById,
   deleteRobot,
   updateRobot,
-  checkToken,
 } = require("../controller/robotController");
+const auth = require("../middlewares/auth");
 
 const router = express.Router();
 
-router.get("/robots", getRobot);
+router.get("/", getRobot);
 
-router.get("/robots/:idRobot", getRobotById);
+router.get("/:idRobot", getRobotById);
 
-router.post("/robots/create", checkToken, createRobot);
+router.post("/create", auth, createRobot); // checkToken
 
-router.delete("/robots/delete/:idRobot", checkToken, deleteRobot);
+router.delete("/delete/:idRobot", auth, deleteRobot);
 
-router.put("/robots/update", checkToken, updateRobot);
+router.put("/update", auth, updateRobot);
 
 module.exports = router;
