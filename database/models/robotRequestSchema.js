@@ -4,8 +4,8 @@ const robotRequestSchema = {
   body: Joi.object({
     name: Joi.string().required(),
     image: Joi.string().required(),
-    speed: Joi.number().required(),
-    resiliency: Joi.number().required(),
+    speed: Joi.number().min(0).max(10).required(),
+    resiliency: Joi.number().min(0).max(10).required(),
     creationDate: Joi.string().required(),
   }),
 };

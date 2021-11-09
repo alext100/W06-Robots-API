@@ -5,6 +5,7 @@ const User = require("../../database/models/users");
 const loginUser = async (req, res, next) => {
   const { username, password } = req.body;
   const user = await User.findOne({ username });
+
   const rightPassword = await bcrypt.compare(password, user.password);
 
   if (!rightPassword) {
