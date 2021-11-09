@@ -14,7 +14,7 @@ const auth = (req, res, next) => {
       next(error);
     } else {
       try {
-        const user = jwt.veryfy(token, process.env.JWT_SECRET);
+        const user = jwt.verify(token, process.env.JWT_SECRET);
         req.userId = user.id;
         next();
       } catch {
