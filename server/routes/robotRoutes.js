@@ -20,12 +20,7 @@ router.get("/:idRobot", getRobotById);
 
 router.post("/create", validate(robotRequestSchema), auth, createRobot);
 
-router.delete(
-  "/delete/:idRobot",
-  validate(robotRequestSchema),
-  auth,
-  deleteRobot
-);
+router.delete("/delete/:idRobot", auth, deleteRobot);
 
 router.put("/update", validate(robotRequestSchema), auth, updateRobot);
 
